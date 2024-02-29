@@ -20,6 +20,7 @@ alias mkdr="make dir"
 
 #aliases various
 alias lm="ls -lt --color | more"
+alias com="cp /home/herman/Dropbox/Cursos/MetodosNumericos/ClassNotes/Methods1/Makefile ."
 alias ls="ls --color "
 alias h="history 40"
 alias m="more"
