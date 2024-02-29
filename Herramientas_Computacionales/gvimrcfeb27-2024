@@ -1,0 +1,334 @@
+" Vim
+" An example for a gvimrc file.
+" The commands in this are executed when the GUI is started.
+"
+" To use it, copy it to
+"     for Unix and OS/2:  ~/.gvimrc
+"             for Amiga:  s:.gvimrc
+"  for MS-DOS and Win32:  $VIM\_gvimrc
+" Make external commands work through a pipe instead of a pseudo-tty
+"set noguipty
+" set the X11 font to use. See 'man xlsfonts' on unix/linux
+" set guifont=-misc-fixed-medium-r-normal--14-130-75-75-c-70-iso8859-1
+"set guifont=8x13bold
+"set guifont=9x15bold
+"set guifont=7x14bold
+"set guifont=7x13bold
+"set guifont=Consolas:h13
+"set guifont=13x13bold
+"set guifont=ProggyCleanTT\ 12
+"set guifont=ProggyCleanTT\ 15
+"set guifont=Neep\ 18
+" This is the font for the grad class
+"set guifont=FreeMono\ Bold\ 20
+"
+" Highly recommended to set tab keys to 4 spaces
+set tabstop=2
+set shiftwidth=2
+set wrapmargin=5
+set ai
+
+set dictionary+=/usr/share/dict/words
+set dictionary+=/usr/share/dict/american-english
+
+
+" do not hightlight errors in latex. It is anoying to see errors
+" that are actually no errors. All red things making everything confusing
+let tex_no_error=1
+"
+" The opposite is 'set wrapscan' while searching for strings....
+set nowrapscan
+"
+" The opposite is set noignorecase
+set ignorecase
+" 
+" You may want to turn off the beep sounds (if you want quite) with visual bell
+" set vb
+" Source in your custom filetypes as given below -
+" so $HOME/vim/myfiletypes.vim
+" Make command line two lines high
+set comments& comments+=b:# formatoptions& formatoptions+=or
+set comments& comments+=b:/* formatoptions& formatoptions+=or
+set ch=2
+" Make shift-insert work like in Xterm
+map <S-Insert> <MiddleMouse>
+map!<S-Insert> <MiddleMouse>
+
+"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+" set mouse=v
+
+
+" Abreviation for inserting automatically braces
+" iab { {<CR>}<UP>
+" Only do this for Vim version 5.0 and later.
+if version >= 500
+  " I like highlighting strings inside C comments
+  let c_comment_strings=1
+  " Switch on syntax highlighting.
+  syntax on
+  " Switch on search pattern highlighting.
+  set hlsearch
+  " For Win32 version, have "K" lookup the keyword in a help file
+  "if has("win32")
+  "  let winhelpfile='windows.hlp'
+  "  map K :execute "!start winhlp32 -k <cword> " . winhelpfile <CR>
+  "endif
+  " Hide the mouse pointer while typing
+"  set mousehide
+  " Set nice colors
+  " background for normal text is light grey
+  " Text below the last line is darker grey
+  " Cursor is white
+  " Constants are not underlined but have a slightly lighter background
+  highlight Normal guibg=grey90
+  highlight Cursor guibg=Red guifg=NONE
+  highlight NonText guibg=grey80
+  highlight Constant gui=NONE guibg=grey95
+  highlight Special gui=NONE guibg=grey95
+endif
+
+
+" For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+
+
+"Use TAB to complete when typing words, else inserts TABs as usual.
+"Uses dictionary and source files to find matching words to complete.
+
+"See help completion for source,
+"Note: usual completion is on <C-n> but more trouble to press all the time.
+"Never type the same word twice and maybe learn a new spellings!
+"Use the Linux dictionary when spelling is in doubt.
+"Window users can copy the file to their machine.
+function! Tab_Or_Complete()
+  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+    return "\<C-N>"
+  else
+    return "\<Tab>"
+  endif
+endfunction
+":inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+
+" Press Space to turn off highlighting and clear any message already displayed.
+":nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
+let g:languagetool_jar='$HOME/LanguageTool-2.2/languagetool-commandline.jar'
+
+" autocmd VimEnter * if filereadable('cscope.out') | CCTreeLoadDB cscope.out | endif
+
+fun! ShowFuncName()
+  let lnum = line(".")
+  let col = col(".")
+  echohl ModeMsg
+  echo getline(search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW'))
+  echohl None
+  call search("\\%" . lnum . "l" . "\\%" . col . "c")
+endfun
+
+map f:call ShowFuncName() <CR>
+
+
+" Search for the ... arguments separated with whitespace (if no '!'),
+" or with non-word characters (if '!' added to command).
+function! SearchMultiLine(bang, ...)
+  if a:0 > 0
+    let sep = (a:bang) ? '\_W\+' : '\_s\+'
+    let @/ = join(a:000, sep)
+  endif
+endfunction
+command! -bang -nargs=* -complete=tag S call SearchMultiLine(<bang>0, <f-args>)|normal! /<C-R>/<CR>
+
+" nnoremap <silent> <CR> @=(foldlevel('.')?'za':"\<CR>")<CR>
+"vnoremap <CR> zf
+
+set backup
+set backupdir=~/.vim/backup
+set directory=~/.vim/temp
+set undodir=~/.vim/temp
+
+set fileformats=unix,dos,mac
+set wildmenu
+set expandtab
+set smartcase
+set smartindent
+set foldmethod=syntax
+" set foldlevel=100
+set foldopen=block,hor,mark,percent,quickfix,tag 
+set history=9999
+
+
+" Open/close fold with right arrow
+" nmap  ( foldclosed('.') == line('.') )  ? l zo : l l
+" nmap  ( foldclosed('.') == line('.') )  ? <Right> zo : <Right> <Right>
+  " Toggle fold state between closed and opened. 
+  " 
+  " If there is no fold at current line, just moves forward. 
+  " If it is present, reverse it's state. 
+
+  fun! ToggleFold() 
+  if foldlevel('.') == 0 
+  normal! l 
+  else 
+  if foldclosed('.') < 0 
+  . foldclose 
+  else 
+  . foldopen 
+  endif 
+  endif 
+  " Clear status line 
+  echo 
+  endfun 
+
+  " Map this function to Space key. 
+  noremap <space> :call ToggleFold()<CR>
+
+" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
+filetype plugin on
+
+" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+" can be called correctly.
+set shellslash
+
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep                                               
+" program to always generate a file-name.
+set grepprg=grep\ -nH\ $*
+
+" OPTIONAL: This enables automatic indentation as you type.
+filetype indent on
+
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
+autocmd FileType tex setlocal makeprg=pdflatex\ --shell-escape\ '%'
+let g:Tex_FormatDependency_pdf = 'pdf'
+"let g:Tex_DefaultTargetFormat = 'pdf'
+"let g:Imap_FreezeImap=1
+
+
+
+set lines=22 columns=95
+set backspace=indent,eol,start
+
+
+" type cmain<Esc> to create a C programming environment
+"iab cmain 
+"\#include <stdio.h>
+"\<CR>#include <stdlib.h>
+"\<CR>
+"\<CR>int main(void) 
+"\<CR>{
+"\<CR>   
+"\<CR>return 0;
+"\<CR>}
+"\<C-O>3k<Tab><Space>
+"
+
+iab cmain #include<stdio.h><CR>#include<stdlib.h><CR><CR>int main(void)<CR>{<CR><CR><CR>return 0;<CR>}<C-O>3k<Space>
+
+
+
+
+
+" type lmain<Esc> to create a latex environment
+iab lmain 
+\\documentclass[12pt]{article}
+\<CR>\usepackage[pdftex]{graphicx}
+\<CR>\usepackage{amsmath}
+\<CR>\usepackage{tikz}
+\<CR>
+\<CR>\begin{document}
+\<CR>
+\<CR>
+\<CR>\end{document}
+\<C-O>2k<Tab><Tab>
+
+
+
+
+" type dotik<Esc> to create a tikzpicture environment
+iab dotik 
+\<CR>\begin{figure}
+\<CR>\begin{center}
+\<CR>\begin{tikzpicture}
+\<CR>\coordinate (O) at (0,0);
+\<CR><Tab><Tab><Tab><Tab>
+\<CR>\end{tikzpicture}
+\<CR>\end{center}
+\<CR>\caption{<++>}
+\<CR>\label{<++>}
+\<CR>\end{figure}
+\<C-O>5k<Tab><Tab><Tab><Tab>
+
+
+" type dofig<Esc> to create a figure in LaTeX 
+:iabbrev <buffer> dofig \begin{figure}[htb!]<CR><Tab>
+      \\centering<CR>
+      \\includegraphics[scale=1.0]{z}<CR>
+      \\caption{<++>}<CR>\label{<++>}<CR>
+      \\end{figure}<Esc>?z<CR>xi<C-O>
+
+
+"  correct my spelling 
+ab teh the
+ab adn and 
+ab mke make
+ab mkae make
+ab ake make
+
+
+
+
+
+
+inoremap <buffer><expr><m-i> CreateMatrix ()
+function! CreateMatrix(rows, ...) abort
+  let save_pos=getpos(".")
+  let cols = a:0 ? a:1 : 3
+  let matrix = ['\begin{pmatrix}']
+  call extend(matrix, repeat([repeat('<++> & ', cols - 1) . '<++>\\'], a:rows))
+  call add(matrix, '\end{pmatrix}')
+  call append(line('.') - 1, matrix)
+  call etpos('.', save_pos)
+endfunction
+command! -nargs=+ Matrix silent call CreateMatrix(<f-args>)
+
+let g:Imap_UsePlaceHolders = 0 
+" cnoremap q  qqq
+":cabbrev wq <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'echo' : 'q')<CR>
+cnoremap wq wa
+
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+
+" guard for distributions lacking the 'persistent_undo' feature.
+if has('persistent_undo')
+    " define a path to store persistent undo files.
+    let target_path = expand('~/.config/vim-persisted-undo/')
+    " create the directory and any parent directories
+    " if the location does not exist.
+    if !isdirectory(target_path)
+        call system('mkdir -p ' . target_path)
+    endif
+    " point Vim to the defined undo directory.
+    let &undodir = target_path
+    " finally, enable undo persistence.
+    set undofile
+endif
+
+
+" write \end{pmatrix} if I write \begin{pmatrix}
+" autocmd FileType tex inoremap <buffer> <silent> \begin{pmatrix}<CR> \begin{pmatrix}<CR>\end{pmatrix}<Esc>ki
+
+
+
