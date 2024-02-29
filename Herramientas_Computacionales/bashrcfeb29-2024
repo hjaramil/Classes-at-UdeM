@@ -1,0 +1,269 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+set history=100
+set savehist=100
+set notify
+
+# aliases
+# typing bad....
+alias mke="make"
+alias mkae="make"
+alias ake="make"
+alias mkdr="make dir"
+
+#aliases various
+alias lm="ls -lt --color | more"
+alias ls="ls --color "
+alias h="history 40"
+alias m="more"
+alias vi="gvim"
+alias up="cd .."
+alias pusha='a=${PWD}'
+alias pushb='b=${PWD}'
+alias pushc='c=${PWD}'
+alias pushd='d=${PWD}'
+alias phones="cat ~/Howto/phones"
+alias cdhow="cd ~/Dropbox/Howto"
+alias cdsym="cd /home/herman/Dropbox/Python/Jupyter/SymPy"
+alias cdtik="cd ~/Dropbox/TikZpic"
+alias cdlan="cd ~/Technical/LandMark"
+alias mkidr="mkdir"
+alias vinput="vi input.tex"
+alias cvv="okular /home/herman/Dropbox/Cursos/CalculoVariasVariables/Documents/CalculoTT.pdf &"
+alias fan="okular /home/herman/Documents/Math/FunctionalAnalysis/ErwinKreyszig.pdf &"
+alias pycharm="pycharm.sh"
+alias jup='jupyter-lab  >/dev/null 2>&1 &'
+alias W='~/Write/Write ./hoy.svgz'
+
+
+
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+export PATH=$PATH:.:/usr/bin:~/SU/bin:/usr/share/sage-6.8-x86_64-Linux:/usr/local/texlive/2020/bin/x86_64-linux:~/.local/bin:/root/texmf/tplpkg/:/snap/pycharm-community/276/bin
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+set nonu
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias jax='google-chrome ~/jaxedit-master/index.html &'
+alias cdC='cd ~/Cprog'
+alias cdop='cd ~/Dropbox/OOP'
+alias cdsc='cd ~/Scratch'
+alias cddl='cd ~/Dropbox/DeepLearning'
+alias cdoo='cd ~/Dropbox/OOP'
+alias cdko='cd ~/Dropbox/Konrad_Lorenz'
+alias cddlb='cd ~/Dropbox/DeepLearning/Book'
+alias cdchap='cd ~/Dropbox/DeepLearning/Book/Chapters'
+alias cddrop='cd ~/Dropbox/Technical/RTMdoc'
+alias cdsrc='cd ~/src/Tierra/src/app/TierraFDSelfContained'
+alias cddoc='cd ~/Dropbox/Doctorado/2022'
+alias cddo='cd ~/Downloads'
+alias cdtop='cd ~/Technical/LandMark/Topology'
+alias cdgro='cd ~/Technical/LandMark/Groebner'
+alias cdsp='cd ~/Technical/LandMark/SphericalGeometry'
+alias cdgra='cd ~/Technical/LandMark/GraphTheory'
+alias cdalg='cd /home/herman/Documents/Math/Algebra/AlgebraicGeometry'
+alias cdcli='cd /home/herman/Dropbox/Technical/Clifford'
+alias cdam='cd /home/herman/Documents/Math/appliedMath'
+alias cdgr='cd /home/herman/Technical/GXTech/Greens'
+alias cdbe='cd /home/herman/Technical/GXTech/Bessel'
+alias cdfwi='cd /home/herman/Technical/Colombia/FWI'
+alias cdsem='cd /home/herman/Dropbox/Pamplona/Seminar/Migration'
+alias cdclass='cd /home/herman/Dropbox/Technical/Colombia/ElectroDynamics/Class'
+alias cdno='cd ~/Documents/Physics/Pamplona'
+alias cded='cd ~/Documents/Geophysics/Other/Edison/RTM/RTM'
+alias cdan='cd /home/herman/Dropbox/Cursos/MetodosNumericos/ClassNotes/Methods1' 
+alias cd03='cd /home/herman/Dropbox/Cursos/MetodosNumericos/MN003'
+alias cd12='cd /home/herman/Dropbox/Cursos/MetodosNumericos/MN012'
+alias cdcal='cd /home/herman/Dropbox/Calculos'
+alias cdan2='cd /home/herman/Dropbox/Cursos/MetodosNumericos/ClassNotes/Methods2' 
+alias cdcv='cd /home/herman/Dropbox/Cursos/CalculoVariasVariables/CVV3'
+alias cdun='cd /home/herman/Dropbox/Herramientas_Computacionales/Unix '
+alias cdR='cd /home/herman/Dropbox/Herramientas_Computacionales/R '
+alias cdwm='cd /home/herman/Dropbox/Technical/WaveMechanics'
+alias cdlin='cd /home/herman/Dropbox/Herramientas_Computacionales/Unix'
+alias cdgit='cd /home/herman/GitCourses'
+alias cdhc='cd /home/herman/Dropbox/Herramientas_Computacionales'
+alias cdhw='cd /home/herman/Dropbox/ML24-1/Hws'
+alias cdma='cd /home/herman/Dropbox/MaestriaComputacion'
+# alias cdjup='cd /home/herman/Dropbox/Cursos/MetodosNumericos/Jupyter'
+alias cdjup='cd /home/herman/Dropbox/Octave/Jupyter'
+alias cdga='cd /home/herman/Documents/Mathematics/Algebra/GeometricAlgebra'
+alias cdcg='cd /home/herman/Dropbox/Technical/Conjugate_Gradient'
+alias cdpy='cd /home/herman/Dropbox/Python'
+alias cdoc='cd /home/herman/Dropbox/AI/machine_learning/Octave'
+alias calc='okular /home/herman/Dropbox/Cursos/CalculoVariasVariables/Documents/CalculoTT.pdf'
+alias cdml='cd /home/herman/Git/machine_learning_fundamentals_book/Tex'
+alias cdml22='cd /home/herman/Dropbox/ML22'
+alias cdai='cd /home/herman/Dropbox/AI/MLClassPython/Tareas'
+alias cdre='cd /home/herman/Dropbox/MLBookV1/reviews'
+alias cdlab='cd /home/herman/Dropbox/DeepLearning/Labs/MyDeepLearningCourse'
+# alias cdneg='cd /home/herman/Dropbox/Negocio'
+alias cdts='cd /home/herman/Dropbox/TimeSeries'
+alias cdtsb='cd /home/herman/Dropbox/TimeSeries/Book'
+alias cdseb='cd /home/herman/Dropbox/TimeSeries/Tareas/Sebastian'
+alias cdjes='cd /home/herman/Dropbox/TimeSeries/Tareas/Jessica'
+alias review='okular /home/herman/Dropbox/MLBookV1/reviews/reviewv6.pdf &'
+alias tati='okular /home/herman/Dropbox/Tatiana/ElsevierLaTeX_Seismology.pdf &'
+# alias cdta 'cd /home/herman/Dropbox/Tatiana'
+alias oc='octave-cli'
+alias ok='okular'
+alias make2='make; make'
+alias vilog='vi input.log'
+alias jlab='jupyter-lab --browser firefox'
+
+# write
+alias Write='~/Write/Write &'
+
+
+# safe typing
+alias mak='make'
+alias mkee='make'
+alias okjular='okular'
+alias okjlar='okular'
+alias okulr='okular'
+
+# quit jupyter
+alias qjup='kill $(pgrep jupyter)' >> ~/.bashrc
+
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+export PS1=':${PWD/*\//}>' 
+
+
+# su FLAG
+export CWPROOT=~/SU
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+
+# source ~/demo/notebookenv/bin/activate
+
+	
+
+export LD_LIBRARY_PATH=/usr/share/xerces-c-3.1.1-x86_64-linux-gcc-3.4/lib:$LD_LIBRARY_PATH:/opt/SURFER/runtime/jre/lib:/usr/lib/python2.7/dist-packages:/usr/lib/x86_62-linux/gnu/:/usr/lib/x86_64=linux-gnu/gtk-2.0/modules
+
+export PKG_CONFIG_PATH=/opt/SURFER/runtime/jre/lib:/usr/java/jre1.8.0_66/lib:/usr/share/doc/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:
+
+# careful here this might stop some jobs....for Bernoulli do not set it
+export TEXINPUTS=.:
+
+# disable touch screen
+# xinput disable 11
+
+export PYTHONPATH=${PYTHONPATH}:~/Dropbox/Cursos/MetodosNumericos/Jupyter
+
+export TEXMACS_PATH=/usr/local/share/TeXmacs
+export PATH=$TEXMACS_PATH/bin:$PATH
+
+
+export LD_LIBRARY_PATH=/usr/lib/cuda/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/lib/cuda/include:$LD_LIBRARY_PATH
+
+export CUDA_PATH=/usr
+
+# mount google drive local in your computer
+systemctl enable --now --user gdfuse
